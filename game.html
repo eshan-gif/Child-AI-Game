@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Stranger Safety Quiz</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background:#e0f7fa; /* aqua blue background */
+      text-align:center;
+      margin:0;
+      padding:0;
+    }
+    header {
+      background:#00bcd4; /* aqua blue header */
+      color:white;
+      padding:20px;
+    }
+    .card {
+      background:#fff;
+      padding:20px;
+      margin:20px auto;
+      width:70%;
+      border-radius:10px;
+      box-shadow:0 0 10px rgba(0,0,0,0.2);
+    }
+    img {
+      width:80px;
+      height:80px;
+      margin:10px;
+    }
+    button {
+      margin:10px;
+      padding:12px 20px;
+      font-size:16px;
+      cursor:pointer;
+      border-radius:6px;
+      border:none;
+      background:#00bcd4;
+      color:white;
+    }
+    button:hover {
+      background:#0097a7;
+    }
+    .feedback {
+      font-weight:bold;
+      margin-top:15px;
+    }
+    .correct { color:green; }
+    .wrong { color:red; }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Stranger Safety Quiz</h1>
+    <p>Learn safe choices in different scenarios</p>
+  </header>
+
+  <div id="game" class="card"></div>
+
+  <script>
+    const questions = [
+      {person:"Stranger", text:"Says: 'I am your father’s friend.'", answer:false, img:"https://img.icons8.com/color/96/person-male.png"},
+      {person:"Stranger", text:"Offers you candies.", answer:false, img:"https://img.icons8.com/color/96/candy.png"},
+      {person:"Security Guard", text:"Helps when you are lost or scared. They wear uniforms and ID cards.", answer:true, img:"https://img.icons8.com/color/96/security-guard.png", requiresInfo:true},
+      {person:"Child Lost", text:"If lost, ask a security guard, teacher, or police officer for help.", answer:true, img:"https://img.icons8.com/color/96/policeman.png", requiresInfo:true},
+      {person:"Stranger", text:"Says: 'My pet is lost. Help me find it.'", answer:false, img:"https://img.icons8.com/color/96/dog.png"},
+      {person:"Stranger", text:"Knocks on the door when parents are away.", answer:false, img:"https://img.icons8.com/color/96/door.png"},
+      {person:"Online Gamer", text:"Sends random messages during games asking for info.", answer:false, img:"https://img.icons8.com/color/96/game-controller.png"},
+      {person:"Stranger", text:"Says: 'Your mother is hurt, come with me.'", answer:false, img:"https://img.icons8.com/color/96/hospital-room.png"},
+      {person:"Contest Trick", text:"Says: 'You will win a prize! Tell me your address.'", answer:false, img:"https://img.icons8.com/color/96/prize.png"},
+      {person:"Amusement Park", text:"Stay close to your parents. If lost, go to the help desk or security guard.", answer:true, img:"https://img.icons8.com/color/96/fairground.png", requiresInfo:true},
+      {person:"Playground Stranger", text:"Says: 'I am a new teacher. Come with me.' But you have never seen them before.", answer:false, img:"https://img.icons8.com/color/96/teacher.png"},
+      {person:"Stranger", text:"Asks for a picture of you.", answer:false, img:"https://img.icons8.com/color/96/camera.png"}
+    ];
+
+    let current = 0;
+  let score = 0;
+
+  function showQuestion() {
+    if (current >= questions.length) {
+      let message = score === questions.length
+        ? `<h2>You are safe! 🎉</h2><p>You got all ${score}/${questions.length} correct.</p>`
+        : `<h2>Quiz Over</h2><p>Your score: ${score}/${questions.length}</p>`;
+      document.getElementById("game").innerHTML = message;
+      return;
+    }
+
+    const q = questions[current];
+    let html = `
+      <h3>Question ${current+1} of ${questions.length}</h3>
+      <img src="${q.img}" alt="${q.person}">
+      <p><strong>${q.person}:</strong> ${q.text}</p>
+    `;
+
+    if (q.requiresInfo) {
+      html += `
+        <p>Please enter your parent’s details:</p>
+        <input type="text" id="parentName" placeholder="Parent's Name"><br>
+        <input type="text" id="parentPhone" placeholder="Phone Number"><br>
+        <input type="text" id="parentAddress" placeholder="Address"><br>
+        <button onclick="submitInfo()">Submit</button>
+        <div id="feedback"></div>
+      `;
+    } else {
+      html += `
+        <button onclick="checkAnswer(true)">Yes — Safe</button>
+        <button onclick="checkAnswer(false)">No — Not Safe</button>
+        <div id="feedback"></div>
+      `;
+    }
+
+    document.getElementById("game").innerHTML = html;
+  }
+
+  function checkAnswer(choice) {
+    const q = questions[current];
+    const fb = document.getElementById("feedback");
+    if (choice === q.answer) {
+      score++;
+      fb.innerHTML = "<p class='feedback correct'>Correct! That was the safe choice.</p>";
+    } else {
+      fb.innerHTML = "<p class='feedback wrong'>Not safe! Think carefully next time.</p>";
+    }
+    current++;
+    setTimeout(showQuestion, 1500);
+  }
+
+  function submitInfo() {
+    const name = document.getElementById("parentName").value.trim();
+    const phone = document.getElementById("parentPhone").value.trim();
+    const address = document.getElementById("parentAddress").value.trim();
+    const fb = document.getElementById("feedback");
+
+    if (name && phone && address) {
+      score++; // count as correct
+      fb.innerHTML = "<p class='feedback correct'>Great! You know your parent’s details.</p>";
+      current++;
+      setTimeout(showQuestion, 2000);
+    } else {
+      fb.innerHTML = "<p class='feedback wrong'>Please fill in all details.</p>";
+    }
+  }
+
+  showQuestion();
+</script>
+</body>
+</html>
