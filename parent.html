@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Family & School Information Form</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background:#e0f7fa; /* aqua blue background */
+      margin: 2rem;
+      text-align:center;
+    }
+    h2 {
+      color:#00796b;
+    }
+    form {
+      max-width: 600px;
+      margin: auto;
+      padding: 1rem;
+      border: 2px solid #00bcd4;
+      border-radius: 12px;
+      background:#ffffff;
+      box-shadow: 0 0 10px rgba(0,0,0,0.2);
+      text-align:left;
+    }
+    .field {
+      margin-bottom: 1rem;
+    }
+    label {
+      display: block;
+      font-weight: bold;
+      margin-bottom: 0.25rem;
+      color:#004d40;
+    }
+    input, textarea {
+      width: 100%;
+      padding: 0.5rem;
+      border: 1px solid #00bcd4;
+      border-radius: 6px;
+    }
+    button {
+      padding: 0.75rem 1.5rem;
+      background: #00bcd4; /* aqua blue button */
+      color: #fff;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight:bold;
+    }
+    button:hover {
+      background: #0097a7;
+    }
+  </style>
+</head>
+<body>
+  <h2>Family & School Information Form</h2>
+  <form id="infoForm">
+    <!-- Parents -->
+    <div class="field">
+      <label for="fName">Father's Name</label>
+      <input type="text" id="fName" name="fName" required />
+    </div>
+    <div class="field">
+      <label for="fContact">Father's Contact Number</label>
+      <input type="tel" id="fContact" name="fContact" required />
+    </div>
+    <div class="field">
+      <label for="mName">Mother's Name</label>
+      <input type="text" id="mName" name="mName" required />
+    </div>
+    <div class="field">
+      <label for="mContact">Mother's Contact Number</label>
+      <input type="tel" id="mContact" name="mContact" required />
+    </div>
+    <div class="field">
+      <label for="parentAddress">Parent's Address</label>
+      <textarea id="parentAddress" name="parentAddress" rows="3" required></textarea>
+    </div>
+    <div class="field">
+      <label for="parentEmail">Parent's Email ID</label>
+      <input type="email" id="parentEmail" name="parentEmail" required />
+    </div>
+
+    <!-- School -->
+    <div class="field">
+      <label for="schoolName">School Name</label>
+      <input type="text" id="schoolName" name="schoolName" required />
+    </div>
+    <div class="field">
+      <label for="schoolAddress">School Address</label>
+      <textarea id="schoolAddress" name="schoolAddress" rows="3" required></textarea>
+    </div>
+
+    <!-- Relatives -->
+    <div class="field">
+      <label for="relativeName">Relative's Name</label>
+      <input type="text" id="relativeName" name="relativeName" />
+    </div>
+
+    <!-- Neighbours -->
+    <div class="field">
+      <label for="neighbourName">Neighbour's Name</label>
+      <input type="text" id="neighbourName" name="neighbourName" />
+    </div>
+
+    <!-- Teachers -->
+    <div class="field">
+      <label for="teacherName">Teacher's Name</label>
+      <input type="text" id="teacherName" name="teacherName" />
+    </div>
+    <div class="field">
+      <label for="teacherPhone">Teacher's Phone Number</label>
+      <input type="tel" id="teacherPhone" name="teacherPhone" pattern="^\+?\d[\d\s\-]{7,}$" />
+    </div>
+
+    <button type="submit">Submit</button>
+  </form>
+
+  <script>
+    const form = document.getElementById("infoForm");
+
+    form.addEventListener("submit", function (event) {
+      event.preventDefault(); // prevent default form submission
+
+      // Collect form data
+      const data = {
+        fName: document.getElementById("fName").value,
+        fContact: document.getElementById("fContact").value,
+        mName: document.getElementById("mName").value,
+        mContact: document.getElementById("mContact").value,
+        parentAddress: document.getElementById("parentAddress").value,
+        parentEmail: document.getElementById("parentEmail").value,
+        schoolName: document.getElementById("schoolName").value,
+        schoolAddress: document.getElementById("schoolAddress").value,
+        relativeName: document.getElementById("relativeName").value,
+        neighbourName: document.getElementById("neighbourName").value,
+        teacherName: document.getElementById("teacherName").value,
+        teacherPhone: document.getElementById("teacherPhone").value
+      };
+
+      // Save to localStorage
+      localStorage.setItem("familySchoolInfo", JSON.stringify(data));
+
+      // Feedback to user
+      alert("Form data saved successfully!");
+    });
+  </script>
+</body>
+</html>
