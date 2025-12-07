@@ -59,6 +59,12 @@
   <div id="game" class="card"></div>
 
   <script>
+
+    const savedData = JSON.parse(localStorage.getItem("familySchoolInfo"));
+
+    let savedName = savedData?.fName || "";
+    let savedPhone = savedData?.fContact || "";
+    let savedAddress = savedData?.parentAddress || "";
     const questions = [
       {person:"Stranger", text:"Says: 'I am your father’s friend.'", answer:false, img:"https://img.icons8.com/color/96/person-male.png"},
       {person:"Stranger", text:"Offers you candies.", answer:false, img:"https://img.icons8.com/color/96/candy.png"},
@@ -127,20 +133,31 @@
   }
 
   function submitInfo() {
-    const name = document.getElementById("fName").value.trim();
-    const phone = document.getElementById("fContact").value.trim();
-    const address = document.getElementById("parentAddress").value.trim();
-    const fb = document.getElementById("feedback");
+  const name = document.getElementById("fName").value.trim();
+  const phone = document.getElementById("fContact").value.trim();
+  const address = document.getElementById("parentAddress").value.trim();
+  const fb = document.getElementById("feedback");
 
-    if (name && phone && address) {
-      score++; // count as correct
-      fb.innerHTML = "<p class='feedback correct'>Great! You know your parent’s details.</p>";
-      current++;
-      setTimeout(showQuestion, 2000);
-    } else {
-      fb.innerHTML = "<p class='feedback wrong'>Please fill in all details.</p>";
-    }
+  // Check if parent data exists
+  if (!savedName || !savedPhone || !savedAddress) {
+    fb.innerHTML = "<p class='feedback wrong'>Parent info not found. Please fill the parent form first.</p>";
+    return;
   }
+
+  // Verify input with saved info
+  if (
+    name.toLowerCase() === savedName.toLowerCase() &&
+    phone === savedPhone &&
+    address.toLowerCase() === savedAddress.toLowerCase()
+  ) {
+    score++;
+    fb.innerHTML = "<p class='feedback correct'>Correct! You remembered your parent's details.</p>";
+    current++;
+    setTimeout(showQuestion, 2000);
+  } else {
+    fb.innerHTML = "<p class='feedback wrong'>Incorrect. Try again!</p>";
+  }
+}
 
   showQuestion();
 </script>
