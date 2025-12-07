@@ -96,8 +96,8 @@
     if (q.requiresInfo) {
       html += `
         <p>Please enter your parent’s details:</p>
-        <input type="text" id="parentName" placeholder="Parent's Name"><br>
-        <input type="text" id="parentPhone" placeholder="Phone Number"><br>
+        <input type="text" id="fName" placeholder="Parent's Name"><br>
+        <input type="text" id="fContact" placeholder="Phone Number"><br>
         <input type="text" id="parentAddress" placeholder="Address"><br>
         <button onclick="submitInfo()">Submit</button>
         <div id="feedback"></div>
@@ -127,8 +127,8 @@
   }
 
   function submitInfo() {
-    const name = document.getElementById("parentName").value.trim();
-    const phone = document.getElementById("parentPhone").value.trim();
+    const name = document.getElementById("fName").value.trim();
+    const phone = document.getElementById("fContact").value.trim();
     const address = document.getElementById("parentAddress").value.trim();
     const fb = document.getElementById("feedback");
 
