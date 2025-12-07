@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Practice With AI – Safety Helper</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background:#e0f7fa;
+      margin: 0;
+      padding: 0;
+      text-align: center;
+    }
+
+    header {
+      background:#00bcd4;
+      padding: 20px;
+      color: white;
+      font-size: 24px;
+      font-weight: bold;
+    }
+
+    .info {
+      margin: 20px auto;
+      width: 80%;
+      background:white;
+      padding:20px;
+      border-radius:10px;
+      box-shadow:0 0 10px rgba(0,0,0,0.2);
+      font-size: 18px;
+    }
+
+    /* Floating Chat Button */
+    #chatbot-btn {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background: #00bcd4;
+      padding: 14px 18px;
+      border-radius: 50%;
+      font-size: 24px;
+      cursor: pointer;
+      color: white;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+      z-index: 999;
+    }
+
+    /* Chatbox UI */
+    #chatbot-box {
+      position: fixed;
+      bottom: 80px;
+      right: 20px;
+      width: 300px;
+      height: 380px;
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+      display: none;
+      flex-direction: column;
+      z-index: 1000;
+    }
+
+    #chatbot-header {
+      background: #00bcd4;
+      color: white;
+      padding: 10px;
+      text-align: center;
+      border-top-left-radius: 12px;
+      border-top-right-radius: 12px;
+      font-weight: bold;
+    }
+
+    #chatbot-messages {
+      flex: 1;
+      padding: 10px;
+      overflow-y: auto;
+      font-size: 14px;
+      text-align: left;
+    }
+
+    .message {
+      margin: 6px 0;
+      padding: 8px;
+      border-radius: 8px;
+      max-width: 80%;
+      line-height: 1.3;
+    }
+
+    .user {
+      background: #e0f7fa;
+      margin-left: auto;
+    }
+
+    .bot {
+      background: #f1f1f1;
+    }
+
+    #chatbot-input-area {
+      display: flex;
+      border-top: 1px solid #ddd;
+    }
+
+    #chatbot-input {
+      flex: 1;
+      border: none;
+      padding: 8px;
+      font-size: 14px;
+    }
+
+    #chatbot-send {
+      background: #00bcd4;
+      color: white;
+      border: none;
+      padding: 8px 12px;
+      cursor: pointer;
+      font-size: 14px;
+    }
+    button {
+      padding: 0.75rem 1.5rem;
+      background: #00bcd4; /* aqua blue button */
+      color: #fff;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight:bold;
+    }
+    button:hover {
+      background: #0097a7;
+    }
+  </style>
+</head>
+
+<body>
+
+  <header>Practice With AI – Ask Anything About Safety</header>
+
+  <div class="info">
+    <p>Here you can safely practice talking to our AI Safety Helper 🤖.</p>
+    <p>Ask questions like:</p>
+    <ul style="text-align:left; display:inline-block;">
+      <li>“What do I do if a stranger talks to me?”</li>
+      <li>“Should I take candies?”</li>
+      <li>“What if I am lost?”</li>
+      <li>“Can I give my phone number?”</li>
+    </ul>
+    <p>The AI helper will tell you the safe choice!</p>
+  </div>
+
+  <!-- Floating Chatbot Button -->
+  <div id="chatbot-btn">💬</div>
+
+  <!-- Chatbot Window -->
+  <div id="chatbot-box">
+    <div id="chatbot-header">Safety Helper 🤖</div>
+    <div id="chatbot-messages"></div>
+    <div id="chatbot-input-area">
+      <input id="chatbot-input" type="text" placeholder="Ask something...">
+      <button id="chatbot-send">Send</button>
+    </div>
+  </div>
+
+  <script>
+    // Toggle Chatbox
+    document.getElementById("chatbot-btn").onclick = () => {
+      const box = document.getElementById("chatbot-box");
+      box.style.display = (box.style.display === "flex") ? "none" : "flex";
+    };
+
+    // Send Message
+    document.getElementById("chatbot-send").onclick = sendMessage;
+    document.getElementById("chatbot-input").addEventListener("keypress", function(e){
+      if (e.key === "Enter") sendMessage();
+    });
+
+    function sendMessage() {
+      const input = document.getElementById("chatbot-input");
+      const text = input.value.trim();
+      if (!text) return;
+
+      addMessage(text, "user");
+      input.value = "";
+      setTimeout(() => botReply(text), 500);
+    }
+
+    function addMessage(text, type) {
+      const msgContainer = document.getElementById("chatbot-messages");
+      const div = document.createElement("div");
+      div.className = "message " + type;
+      div.innerText = text;
+      msgContainer.appendChild(div);
+      msgContainer.scrollTop = msgContainer.scrollHeight;
+    }
+
+    // AI Keyword-Based Logic
+    function botReply(text) {
+      let msg = text.toLowerCase();
+
+      if (msg.includes("stranger") || msg.includes("talks")) {
+        addMessage("❌ Never go with a stranger. Stay near a trusted adult.", "bot");
+        return;
+      }
+
+      if (msg.includes("candy") || msg.includes("sweet") || msg.includes("gift")) {
+        addMessage("❌ Do NOT take candies or gifts from strangers.", "bot");
+        return;
+      }
+
+      if (msg.includes("lost") || msg.includes("missing")) {
+        addMessage("✔ If you are lost, go to a security guard, teacher, or help desk.", "bot");
+        return;
+      }
+
+      if (msg.includes("phone") || msg.includes("number") || msg.includes("address")) {
+        addMessage("❌ Never share your phone number, house address, or school.", "bot");
+        return;
+      }
+
+      if (msg.includes("help") || msg.includes("scared")) {
+        addMessage("✔ Stay calm. Find a trusted adult or a security guard.", "bot");
+        return;
+      }
+
+      addMessage("🤖 I am here to keep you safe! Ask me about strangers, safety, or what to do.", "bot");
+    }
+  </script>
+
+  <button type="submit" onclick="window.location.href='game.html'">Go to next page</button>
+
+</body>
+</html>
